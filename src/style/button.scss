@@ -1,0 +1,80 @@
+@import './variables.scss';
+
+.button {
+  width: 101px;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  transition: 0.3s transform;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .inner {
+    position: relative;
+    line-height: 14px;
+    transition: none;
+    padding: 11px 0;
+    &::before {
+      transition: none;
+      border-style: solid;
+      border-width: 0 0 10px 10px;
+      content: "";
+      display: block;
+      position: absolute;
+      top: -1px;
+      left: -1px;
+    }
+    &::after {
+      transition: none;
+      border-style: solid;
+      border-width: 0 0 10px 10px;
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      rotate: (180deg);
+    }
+  }
+
+  &__light {
+    .inner {
+      &::before,&::after  {
+        border-color: transparent $light;
+      }
+    }
+  }
+  &__dark {
+    .inner {
+      &::before,&::after  {
+        border-color: transparent $dark;
+      }
+    }
+  }
+  &__main, &__secondary {
+    &:hover {
+      color: #f1f1f1;
+    }
+  }
+  &__main {
+    .inner {
+      background-color: $main-color;
+    }
+  }
+  &__secondary {
+    .inner {
+      background-color: $grey;
+    }
+  }
+  &__long {
+    width: 170px;
+    margin-top: 45px;
+  }
+}

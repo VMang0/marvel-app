@@ -1,0 +1,18 @@
+@import '../../style/variables.scss';
+
+.app__banner {
+  height: 100px;
+  background-color: $dark;
+  padding: 0 25px 0 45px;
+  display: grid;
+  grid-template-columns: 152px auto 133px;
+  h2 {
+    padding-left: 83px;
+    color: $light;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+  }
+}
