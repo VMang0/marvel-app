@@ -1,26 +1,24 @@
 import React from 'react';
-import thor from "../../../resources/img/thor.jpeg";
 
-import './randon-char.scss';
+import './random-char.scss';
 
-const RandomChar = () => {
+const RandomChar = ({ char }) => {
+  const { name, description, thumbnail, homepage, wiki } = char;
   return (
-    <div className="randomCharBlock__dynamic">
-      <img src={thor} alt='thor character' />
-      <div className="randomCharBlock__dynamic__info">
-        <p className="randomCharBlock__dynamic__info__charname">thor</p>
-        <p className="randomCharBlock__dynamic__info__details">
-          As the Norse God of thunder and lightning, Thor wields one of the greatest
-          weapons ever made, the enchanted hammer Mjolnir. While others have described
-          Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate...
+    <div className="randomChar">
+      <img src={thumbnail} alt={`${name} character`} />
+      <div className="randomChar__info">
+        <p className="randomChar__info__charname">{name}</p>
+        <p className="randomChar__info__details">
+          {description}
         </p>
-        <div className="randomCharBlock__dynamic__info__btns">
-          <a href="/"
+        <div className="randomChar__info__btns">
+          <a href={homepage}
              aria-label='Go to homepage'
              className="button button__main button__light">
             <div className='inner'>Homepage</div>
           </a>
-          <a href="/"
+          <a href={wiki}
              aria-label='Go to wiki-page about character'
              className="button button__secondary button__light">
             <div className='inner'>Wiki</div>
