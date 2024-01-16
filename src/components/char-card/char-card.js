@@ -1,12 +1,13 @@
 import React from 'react';
 import './char-card.scss';
-import abyss from '../../resources/img/abyss.jpg';
 
-const CharCard = () => {
+const CharCard = ({ char }) => {
+  const { name, thumbnail } = char;
+  const objectFit = thumbnail.split('/').includes('image_not_available.jpg') ? 'contain' : 'cover';
   return (
     <li className="char__item">
-      <img src={abyss} alt="CHANGE"/>
-      <p className='char__item__name'>Adam Warlock</p>
+      <img src={ thumbnail } alt={`${name} character`} style={{ objectFit }} />
+      <p className='char__item__name'>{ name }</p>
     </li>
   );
 };
