@@ -1,14 +1,53 @@
-import React from 'react';
+import React, {Component} from 'react';
 import CharCard from "../char-card/char-card";
 import './char-cards-list.scss'
+import Service from "../../service/service";
+import Spinner from "../assets/spinner/spinner";
 
-const CharCardsList = () => {
+class CharCardsList extends Component {
+  service = new Service();
+  state = {
+    chars: [],
+    loading: true,
+    error: false
+  }
+  onChartsLoad = (chars) => {
+    this.setState({
+      chars,
+      loading: false,
+    });
+  }
+  onError = () => {
+    this.setState({
+      loading: false,
+      error: true
+    });
+  }
+  componentDidMount() {
+    this.service
+      .getAllCharacters()
+      .then(this.onChartsLoad)
+      .catch(this.onError)
+  }
+
+  render() {
+    const { chars, loading } = this.state;
+    const content = loading ? <Spinner /> :  <CharList chars={chars} />
+    return (
+      <div className='char__list'>
+        { content }
+      </div>
+    );
+  }
+}
+
+const CharList = ({ chars }) => {
   return (
-    <div className='char__list'>
+    <>
       <ul className='char__grid'>
         {
-          new Array(9).fill().map((_, index) => (
-            <CharCard key={index} />
+          chars.map((item, index) => (
+            <CharCard key={index} char={item} />
           ))
         }
       </ul>
@@ -17,8 +56,8 @@ const CharCardsList = () => {
         aria-label='click to load more character'>
         <div className="inner">load more</div>
       </button>
-    </div>
-  );
-};
+    </>
+  )
+}
 
 export default CharCardsList;
