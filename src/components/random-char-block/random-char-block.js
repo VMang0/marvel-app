@@ -7,15 +7,14 @@ import Spinner from "../assets/spinner/spinner";
 import Error from "../assets/error/error";
 
 class RandomCharBlock extends Component{
-  constructor(props) {
-    super(props);
-    this.updateChar();
-  }
-
   state = {
     char: {},
     loading: true,
     error: false
+  }
+
+  componentDidMount() {
+    this.updateChar();
   }
 
   marvelService = new Service();
@@ -23,7 +22,8 @@ class RandomCharBlock extends Component{
   onCharLoaded = (char) => {
     this.setState({
       char,
-      loading: false
+      loading: false,
+      error: false
     })
   }
 
@@ -65,7 +65,8 @@ class RandomCharBlock extends Component{
           </p>
           <button
             className="button button__main button__dark"
-            aria-label='click to choose another character'>
+            aria-label='click to choose another character'
+            onClick={this.updateChar}>
             <div className="inner">try it</div>
           </button>
           <img src={mjolnir} alt="Thor's Hammer and Captain America's Shield"/>
