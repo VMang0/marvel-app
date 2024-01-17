@@ -3,6 +3,7 @@ import CharCard from "../char-card/char-card";
 import './char-cards-list.scss'
 import Service from "../../service/service";
 import Spinner from "../assets/spinner/spinner";
+import Error from "../assets/error/error";
 
 class CharCardsList extends Component {
   service = new Service();
@@ -11,7 +12,7 @@ class CharCardsList extends Component {
     loading: true,
     error: false
   }
-  onChartsLoad = (chars) => {
+  onCharsLoad = (chars) => {
     this.setState({
       chars,
       loading: false,
@@ -26,16 +27,20 @@ class CharCardsList extends Component {
   componentDidMount() {
     this.service
       .getAllCharacters()
-      .then(this.onChartsLoad)
+      .then(this.onCharsLoad)
       .catch(this.onError)
   }
 
   render() {
-    const { chars, loading } = this.state;
-    const content = loading ? <Spinner /> :  <CharList chars={chars} />
+    const { chars, loading, error } = this.state;
+    const spinner = loading ? <Spinner /> : null;
+    const errorMessage = error ? <Error /> : null;
+    const content = !(loading || error) ? <CharList chars={chars} /> : null;
     return (
       <div className='char__list'>
         { content }
+        { spinner }
+        { errorMessage }
       </div>
     );
   }
