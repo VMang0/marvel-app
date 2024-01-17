@@ -13,7 +13,10 @@ class Service {
   }
   getAllCharacters = async (offset = this._baseCharListOffset) => {
     const res = await this.getResource(`${this._apiBaseUrl}characters?limit=9&offset=${offset}&${this._apiKey}`);
-    return res.data.results.map(this._transformChar)
+    return {
+      newChars: res.data.results.map(this._transformChar),
+      totalChar: res.data.total
+    }
   }
   getCharacter = async (id) => {
     const res = await this.getResource(`${this._apiBaseUrl}characters/${id}?${this._apiKey}`)

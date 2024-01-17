@@ -18,7 +18,8 @@ class CharCardsList extends Component {
     loading: true,
     error: false,
     offset: 0,
-    loadingNewChars: false
+    loadingNewChars: false,
+    listEnded: false
   }
   componentDidMount() {
     //условие для предотвращения вызыва повторного getCharsList при монтировании страницы в strict mode
@@ -39,12 +40,17 @@ class CharCardsList extends Component {
       loadingNewChars: true
     })
   }
-  onCharsListLoaded = (newChars) => {
+  onCharsListLoaded = ({ newChars, totalChar }) => {
+    let listEnded = false;
+    if (newChars > 9 || this.state.offset >= totalChar - 1) {
+      listEnded = true;
+    }
     this.setState(({ chars, offset }) => ({
       chars: [...chars, ...newChars],
       loading: false,
       offset: offset + 9,
-      loadingNewChars: false
+      loadingNewChars: false,
+      listEnded
     }));
   }
   onError = () => {
@@ -55,7 +61,7 @@ class CharCardsList extends Component {
   }
 
   render() {
-    const { chars, loading, error, offset, loadingNewChars } = this.state;
+    const { chars, loading, error, offset, loadingNewChars, listEnded } = this.state;
     const { onCharSelected, charId } = this.props;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage = error ? <Error /> : null;
@@ -66,7 +72,8 @@ class CharCardsList extends Component {
         charId={charId}
         getCharsList={this.getCharsList}
         offset={offset}
-        loadingNewChars={loadingNewChars} />
+        loadingNewChars={loadingNewChars}
+        listEnded={listEnded} />
       : null;
     return (
       <div className='char__list'>
@@ -78,7 +85,9 @@ class CharCardsList extends Component {
   }
 }
 
-const CharList = ({ chars, onCharSelected, charId, getCharsList, offset, loadingNewChars }) => {
+const CharList = (props) => {
+  const { chars, onCharSelected, charId, getCharsList, offset, loadingNewChars, listEnded } = props;
+  const display = listEnded ? 'none' : ''
   return (
     <>
       <ul className='char__grid'>
@@ -96,7 +105,8 @@ const CharList = ({ chars, onCharSelected, charId, getCharsList, offset, loading
         className="button button__main button__light button__long"
         aria-label='click to load more character'
         disabled={loadingNewChars}
-        onClick={() => getCharsList(offset)}>
+        onClick={() => getCharsList(offset)}
+        style={{ display }}>
         <div className="inner">load more</div>
       </button>
     </>
