@@ -1,6 +1,8 @@
 .char__info {
   padding: 25px;
   box-shadow: 0 0 20px rgba(0, 0, 0, .25);
+  align-self: start;
+
   &__base {
     display: grid;
     grid-template-columns: 150px auto;

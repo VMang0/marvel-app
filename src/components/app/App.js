@@ -14,9 +14,7 @@ const App = () => {
         <RandomCharBlock />
         <div className="char__content">
           <CharCardsList />
-          <div className="char__content__forms">
-            <CharInfoForm />
-          </div>
+          <CharInfoForm />
         </div>
         <img src={decoration} alt="decoration man" className="bg_decoration"/>
         {/*<AppBanner />
