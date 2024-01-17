@@ -6,17 +6,46 @@ import Spinner from "../assets/spinner/spinner";
 import Error from "../assets/error/error";
 
 class CharCardsList extends Component {
+  //для предотвращения вызыва повторного getCharsList при монтировании страницы в strict mode
+  constructor(props) {
+    super(props);
+    this.didLogRef = React.createRef();
+    this.didLogRef.current = false;
+  }
   service = new Service();
   state = {
     chars: [],
     loading: true,
-    error: false
+    error: false,
+    offset: 0,
+    loadingNewChars: false
   }
-  onCharsLoad = (chars) => {
+  componentDidMount() {
+    //условие для предотвращения вызыва повторного getCharsList при монтировании страницы в strict mode
+    if (this.didLogRef.current === false) {
+      this.didLogRef.current = true;
+      this.getCharsList();
+    }
+  }
+  getCharsList = (offset) => {
+    this.onLoadingNewCharsList()
+    this.service
+      .getAllCharacters(offset)
+      .then(this.onCharsListLoaded)
+      .catch(this.onError)
+  }
+  onLoadingNewCharsList = () => {
     this.setState({
-      chars,
+      loadingNewChars: true
+    })
+  }
+  onCharsListLoaded = (newChars) => {
+    this.setState(({ chars, offset }) => ({
+      chars: [...chars, ...newChars],
       loading: false,
-    });
+      offset: offset + 9,
+      loadingNewChars: false
+    }));
   }
   onError = () => {
     this.setState({
@@ -24,15 +53,9 @@ class CharCardsList extends Component {
       error: true
     });
   }
-  componentDidMount() {
-    this.service
-      .getAllCharacters()
-      .then(this.onCharsLoad)
-      .catch(this.onError)
-  }
 
   render() {
-    const { chars, loading, error } = this.state;
+    const { chars, loading, error, offset, loadingNewChars } = this.state;
     const { onCharSelected, charId } = this.props;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage = error ? <Error /> : null;
@@ -40,7 +63,10 @@ class CharCardsList extends Component {
       ? <CharList
         chars={chars}
         onCharSelected={onCharSelected}
-        charId={charId} />
+        charId={charId}
+        getCharsList={this.getCharsList}
+        offset={offset}
+        loadingNewChars={loadingNewChars} />
       : null;
     return (
       <div className='char__list'>
@@ -52,7 +78,7 @@ class CharCardsList extends Component {
   }
 }
 
-const CharList = ({ chars, onCharSelected, charId }) => {
+const CharList = ({ chars, onCharSelected, charId, getCharsList, offset, loadingNewChars }) => {
   return (
     <>
       <ul className='char__grid'>
@@ -68,7 +94,9 @@ const CharList = ({ chars, onCharSelected, charId }) => {
       </ul>
       <button
         className="button button__main button__light button__long"
-        aria-label='click to load more character'>
+        aria-label='click to load more character'
+        disabled={loadingNewChars}
+        onClick={() => getCharsList(offset)}>
         <div className="inner">load more</div>
       </button>
     </>
