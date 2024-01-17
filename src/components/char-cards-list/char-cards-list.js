@@ -33,10 +33,15 @@ class CharCardsList extends Component {
 
   render() {
     const { chars, loading, error } = this.state;
-    const { onCharSelected } = this.props;
+    const { onCharSelected, charId } = this.props;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage = error ? <Error /> : null;
-    const content = !(loading || error) ? <CharList chars={chars} onCharSelected={onCharSelected} /> : null;
+    const content = !(loading || error)
+      ? <CharList
+        chars={chars}
+        onCharSelected={onCharSelected}
+        charId={charId} />
+      : null;
     return (
       <div className='char__list'>
         { content }
@@ -47,7 +52,7 @@ class CharCardsList extends Component {
   }
 }
 
-const CharList = ({ chars, onCharSelected }) => {
+const CharList = ({ chars, onCharSelected, charId }) => {
   return (
     <>
       <ul className='char__grid'>
@@ -56,7 +61,8 @@ const CharList = ({ chars, onCharSelected }) => {
             <CharCard
               key={item.id}
               char={item}
-              onCharSelected={onCharSelected} />
+              onCharSelected={onCharSelected}
+              selected={charId === item.id}/>
           ))
         }
       </ul>
