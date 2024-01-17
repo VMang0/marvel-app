@@ -25,6 +25,7 @@ class Service {
       ? oldDescription.slice(0, 227) + '...'
       : 'Description not found'
     return {
+      id: char.id,
       name: char.name,
       description: transformDescription,
       thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,

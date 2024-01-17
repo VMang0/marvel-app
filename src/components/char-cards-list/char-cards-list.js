@@ -46,8 +46,8 @@ const CharList = ({ chars }) => {
     <>
       <ul className='char__grid'>
         {
-          chars.map((item, index) => (
-            <CharCard key={index} char={item} />
+          chars.map((item) => (
+            <CharCard key={item.id} char={item} />
           ))
         }
       </ul>
