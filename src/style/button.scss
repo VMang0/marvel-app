@@ -76,5 +76,10 @@
   &__long {
     width: 170px;
     margin-top: 45px;
+    &:disabled{
+      .inner {
+        background-color: #cd4a4c;
+      }
+    }
   }
 }
